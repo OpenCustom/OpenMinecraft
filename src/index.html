@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenMinecraft Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Preloader (скрыт по умолчанию) -->
+    <div class="preloader" id="preloader">
+        <div class="preloader__container">
+            <div class="monochrome-loader">
+                <div class="loader-cube">
+                    <div class="cube-face cube-front"></div>
+                    <div class="cube-face cube-back"></div>
+                    <div class="cube-face cube-left"></div>
+                    <div class="cube-face cube-right"></div>
+                    <div class="cube-face cube-top"></div>
+                    <div class="cube-face cube-bottom"></div>
+                </div>
+                <div class="loader-text" id="loaderText">Initializing OpenMinecraft</div>
+                <div class="loader-progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="loader-percentage" id="percentage">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Launcher Interface -->
+    <div class="launcher-container">
+        <!-- Header -->
+        <header class="launcher-header">
+            <div class="header-left">
+                <div class="launcher-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">OpenMinecraft</span>
+                        <span class="brand-subtitle">v2.5.1</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="player-profile" id="playerProfile">
+                    <div class="profile-avatar">
+                        <div class="avatar-pixel"></div>
+                        <div class="avatar-status"></div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="playerName">Player</div>
+                        <div class="profile-uuid" id="playerUUID">••••••••-••••-••••-••••-••••••••••••</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="window-btn" id="minimizeBtn"><i class="fas fa-minus"></i></button>
+                <button class="window-btn" id="maximizeBtn"><i class="fas fa-square"></i></button>
+                <button class="window-btn close" id="closeBtn"><i class="fas fa-times"></i></button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="launcher-main">
+            <!-- Sidebar Navigation -->
+            <nav class="launcher-sidebar">
+                <div class="nav-items">
+                    <button class="nav-item active" data-tab="play"><i class="fas fa-play"></i><span>Play</span></button>
+                    <button class="nav-item" data-tab="installations"><i class="fas fa-download"></i><span>Installations</span></button>
+                    <button class="nav-item" data-tab="mods"><i class="fas fa-puzzle-piece"></i><span>Mods</span></button>
+                    <button class="nav-item" data-tab="servers"><i class="fas fa-server"></i><span>Servers</span></button>
+                    <button class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>Settings</span></button>
+                    <button class="nav-item" data-tab="console"><i class="fas fa-terminal"></i><span>Console</span></button>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="launcher-content">
+                <!-- Play Tab -->
+                <div class="content-tab active" id="play-tab">
+                    <div class="tab-header">
+                        <h1 class="tab-title">Launch Minecraft</h1>
+                        <p class="tab-subtitle">Select version and play</p>
+                    </div>
+                    
+                    <div class="launch-section">
+                        <div class="version-selector">
+                            <h3 class="selector-title">Select Version</h3>
+                            <div class="version-list" id="versionList"></div>
+                            <div class="selector-actions">
+                                <button class="btn" id="refreshVersions"><i class="fas fa-sync-alt"></i> Refresh</button>
+                            </div>
+                        </div>
+                        
+                        <div class="launch-controls">
+                            <div class="control-group">
+                                <label>Memory Allocation</label>
+                                <div class="ram-control">
+                                    <input type="range" id="ramSlider" min="2" max="16" value="8" step="1">
+                                    <div class="ram-display">
+                                        <span id="ramValue">8 GB</span>
+                                        <small>Max: 16 GB</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label>Launch Options</label>
+                                <div class="options-grid">
+                                    <label class="option-checkbox">
+                                        <input type="checkbox" id="optionFullscreen" checked>
+                                        <span>Fullscreen</span>
+                                    </label>
+                                    <label class="option-checkbox">
+                                        <input type="checkbox" id="optionSound" checked>
+                                        <span>Sound</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="launch-actions">
+                                <button class="btn primary" id="launchBtn"><i class="fas fa-rocket"></i> Launch Minecraft</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-news">
+                        <h3><i class="fas fa-newspaper"></i> Latest News</h3>
+                        <div class="news-content" id="newsContent"></div>
+                    </div>
+                </div>
+
+                <!-- Installations Tab -->
+                <div class="content-tab" id="installations-tab">
+                    <div class="tab-header">
+                        <h1 class="tab-title">Installations</h1>
+                        <button class="btn primary" id="createInstallation"><i class="fas fa-plus"></i> Create New</button>
+                    </div>
+                    <div class="installations-grid" id="installationsGrid"></div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="content-tab" id="settings-tab">
+                    <div class="tab-header">
+                        <h1 class="tab-title">Settings</h1>
+                    </div>
+                    
+                    <div class="settings-container">
+                        <div class="settings-sidebar">
+                            <button class="settings-nav active" data-setting="general"><i class="fas fa-sliders-h"></i> General</button>
+                            <button class="settings-nav" data-setting="java"><i class="fas fa-coffee"></i> Java</button>
+                            <button class="settings-nav" data-setting="appearance"><i class="fas fa-palette"></i> Appearance</button>
+                        </div>
+                        
+                        <div class="settings-content">
+                            <div class="settings-section active" id="general-settings">
+                                <h3>General Settings</h3>
+                                <div class="setting-item">
+                                    <label>Keep Launcher Open</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="keepOpen" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section" id="appearance-settings">
+                                <h3>Appearance</h3>
+                                <div class="setting-item">
+                                    <label>Theme</label>
+                                    <div class="theme-selector">
+                                        <button class="theme-option active" data-theme="monochrome">Monochrome</button>
+                                        <button class="theme-option" data-theme="dark">Dark</button>
+                                        <button class="theme-option" data-theme="light">Light</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Console Tab -->
+                <div class="content-tab" id="console-tab">
+                    <div class="tab-header">
+                        <h1 class="tab-title">Console</h1>
+                        <button class="btn" id="clearConsole"><i class="fas fa-trash"></i> Clear</button>
+                    </div>
+                    <div class="console-container">
+                        <div class="console-output" id="consoleOutput">
+                            <div class="console-line info">OpenMinecraft Console initialized</div>
+                        </div>
+                        <div class="console-input">
+                            <input type="text" id="consoleCommand" placeholder="Type command...">
+                            <button id="consoleSend"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <aside class="launcher-panel">
+                <div class="panel-section">
+                    <h3><i class="fas fa-tachometer-alt"></i> System Monitor</h3>
+                    <div class="monitor-grid">
+                        <div class="monitor-item">
+                            <label>CPU Usage</label>
+                            <div class="monitor-bar"><div class="bar-fill cpu" id="cpuUsage"></div></div>
+                            <span id="cpuValue">0%</span>
+                        </div>
+                        <div class="monitor-item">
+                            <label>Memory</label>
+                            <div class="monitor-bar"><div class="bar-fill memory" id="memoryUsage"></div></div>
+                            <span id="memoryValue">0/16 GB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h3><i class="fas fa-server"></i> Server Status</h3>
+                    <div class="server-list" id="serverList"></div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer -->
+        <footer class="launcher-footer">
+            <div class="footer-left">
+                <div class="game-status">
+                    <span class="status-indicator offline" id="gameStatusIndicator"></span>
+                    <span id="gameStatusText">Ready</span>
+                </div>
+            </div>
+            
+            <div class="footer-right">
+                <button class="footer-btn" id="aboutBtn"><i class="fas fa-info-circle"></i> About</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About OpenMinecraft</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="about-content">
+                    <div class="about-logo"><i class="fas fa-cube"></i></div>
+                    <h4>OpenMinecraft Launcher</h4>
+                    <p class="about-version">v2.5.1</p>
+                    <p>A modern, open-source Minecraft launcher with sleek design.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
